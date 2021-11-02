@@ -82,7 +82,7 @@ PATH_SEP: Final[str] = re.escape("/")
 
 
 _ExpectHandler = Callable[[Request], Awaitable[None]]
-_Resolve = Tuple[Optional[AbstractMatchInfo], Set[str]]
+_Resolve = Tuple[Optional["UrlMappingMatchInfo"], Set[str]]
 
 
 class _InfoDict(TypedDict, total=False):
@@ -495,6 +495,7 @@ class PrefixResource(AbstractResource):
         assert prefix in ("", "/") or not prefix.endswith("/"), prefix
         super().__init__(name=name)
         self._prefix = _requote_path(prefix)
+        self._prefix2 = self._prefix + "/"
 
     @property
     def canonical(self) -> str:
@@ -505,6 +506,7 @@ class PrefixResource(AbstractResource):
         assert not prefix.endswith("/")
         assert len(prefix) > 1
         self._prefix = prefix + self._prefix
+        self._prefix2 = self._prefix + "/"
 
     def raw_match(self, prefix: str) -> bool:
         return False
@@ -616,7 +618,7 @@ class StaticResource(PrefixResource):
         path = request.rel_url.raw_path
         method = request.method
         allowed_methods = set(self._routes)
-        if not path.startswith(self._prefix):
+        if not path.startswith(self._prefix2) and path != self._prefix:
             return None, set()
 
         if method not in allowed_methods:
@@ -732,7 +734,7 @@ class PrefixedSubAppResource(PrefixResource):
 
     async def resolve(self, request: Request) -> _Resolve:
         if (
-            not request.url.raw_path.startswith(self._prefix + "/")
+            not request.url.raw_path.startswith(self._prefix2)
             and request.url.raw_path != self._prefix
         ):
             return None, set()
@@ -982,7 +984,7 @@ class UrlDispatcher(AbstractRouter, Mapping[str, AbstractResource]):
         self._resources = []  # type: List[AbstractResource]
         self._named_resources = {}  # type: Dict[str, AbstractResource]
 
-    async def resolve(self, request: Request) -> AbstractMatchInfo:
+    async def resolve(self, request: Request) -> UrlMappingMatchInfo:
         method = request.method
         allowed_methods = set()  # type: Set[str]
 
@@ -992,11 +994,11 @@ class UrlDispatcher(AbstractRouter, Mapping[str, AbstractResource]):
                 return match_dict
             else:
                 allowed_methods |= allowed
+
+        if allowed_methods:
+            return MatchInfoError(HTTPMethodNotAllowed(method, allowed_methods))
         else:
-            if allowed_methods:
-                return MatchInfoError(HTTPMethodNotAllowed(method, allowed_methods))
-            else:
-                return MatchInfoError(HTTPNotFound())
+            return MatchInfoError(HTTPNotFound())
 
     def __iter__(self) -> Iterator[str]:
         return iter(self._named_resources)

@@ -169,6 +169,7 @@ class ClientSession:
     """First-class interface for making HTTP requests."""
 
     __slots__ = (
+        "_base_url",
         "_source_traceback",
         "_connector",
         "_loop",
@@ -193,6 +194,7 @@ class ClientSession:
 
     def __init__(
         self,
+        base_url: Optional[StrOrURL] = None,
         *,
         connector: Optional[BaseConnector] = None,
         cookies: Optional[LooseCookies] = None,
@@ -216,6 +218,14 @@ class ClientSession:
         trace_configs: Optional[List[TraceConfig]] = None,
         read_bufsize: int = 2 ** 16,
     ) -> None:
+        if base_url is None or isinstance(base_url, URL):
+            self._base_url: Optional[URL] = base_url
+        else:
+            self._base_url = URL(base_url)
+            assert (
+                self._base_url.origin() == self._base_url
+            ), "Only absolute URLs without path part are supported"
+
         loop = asyncio.get_running_loop()
 
         if connector is None:
@@ -304,6 +314,14 @@ class ClientSession:
         """Perform HTTP request."""
         return _RequestContextManager(self._request(method, url, **kwargs))
 
+    def _build_url(self, str_or_url: StrOrURL) -> URL:
+        url = URL(str_or_url)
+        if self._base_url is None:
+            return url
+        else:
+            assert not url.is_absolute() and url.path.startswith("/")
+            return self._base_url.join(url)
+
     async def _request(
         self,
         method: str,
@@ -363,7 +381,7 @@ class ClientSession:
         proxy_headers = self._prepare_headers(proxy_headers)
 
         try:
-            url = URL(str_or_url)
+            url = self._build_url(str_or_url)
         except ValueError as e:
             raise InvalidURL(str_or_url) from e
 
@@ -403,7 +421,7 @@ class ClientSession:
         ]
 
         for trace in traces:
-            await trace.send_request_start(method, url, headers)
+            await trace.send_request_start(method, url.update_query(params), headers)
 
         timer = tm.timer()
         try:
@@ -519,7 +537,7 @@ class ClientSession:
 
                         for trace in traces:
                             await trace.send_request_redirect(
-                                method, url, headers, resp
+                                method, url.update_query(params), headers, resp
                             )
 
                         redirects += 1
@@ -607,7 +625,9 @@ class ClientSession:
             resp._history = tuple(history)
 
             for trace in traces:
-                await trace.send_request_end(method, url, headers, resp)
+                await trace.send_request_end(
+                    method, url.update_query(params), headers, resp
+                )
             return resp
 
         except BaseException as e:
@@ -618,7 +638,9 @@ class ClientSession:
                 handle = None
 
             for trace in traces:
-                await trace.send_request_exception(method, url, headers, e)
+                await trace.send_request_exception(
+                    method, url.update_query(params), headers, e
+                )
             raise
 
     def ws_connect(
@@ -634,6 +656,7 @@ class ClientSession:
         heartbeat: Optional[float] = None,
         auth: Optional[BasicAuth] = None,
         origin: Optional[str] = None,
+        params: Optional[Mapping[str, str]] = None,
         headers: Optional[LooseHeaders] = None,
         proxy: Optional[StrOrURL] = None,
         proxy_auth: Optional[BasicAuth] = None,
@@ -655,6 +678,7 @@ class ClientSession:
                 heartbeat=heartbeat,
                 auth=auth,
                 origin=origin,
+                params=params,
                 headers=headers,
                 proxy=proxy,
                 proxy_auth=proxy_auth,
@@ -678,6 +702,7 @@ class ClientSession:
         heartbeat: Optional[float] = None,
         auth: Optional[BasicAuth] = None,
         origin: Optional[str] = None,
+        params: Optional[Mapping[str, str]] = None,
         headers: Optional[LooseHeaders] = None,
         proxy: Optional[StrOrURL] = None,
         proxy_auth: Optional[BasicAuth] = None,
@@ -745,6 +770,7 @@ class ClientSession:
         resp = await self.request(
             method,
             url,
+            params=params,
             headers=real_headers,
             read_until_eof=False,
             auth=auth,

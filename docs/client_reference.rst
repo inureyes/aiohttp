@@ -38,7 +38,8 @@ Usage example::
 
 The client session supports the context manager protocol for self closing.
 
-.. class:: ClientSession(*, connector=None, loop=None, cookies=None, \
+.. class:: ClientSession(base_url=None, *, \
+                         connector=None, cookies=None, \
                          headers=None, skip_auto_headers=None, \
                          auth=None, json_serialize=json.dumps, \
                          version=aiohttp.HttpVersion11, \
@@ -55,6 +56,11 @@ The client session supports the context manager protocol for self closing.
 
    The class for creating client sessions and making requests.
 
+
+   :param base_url: Base part of the URL (optional)
+      If set it allows to skip the base part in request calls.
+
+      .. versionadded:: 3.8
 
    :param aiohttp.BaseConnector connector: BaseConnector
       sub-class instance to support connection pooling.
@@ -644,6 +650,7 @@ The client session supports the context manager protocol for self closing.
                             autoping=True,\
                             heartbeat=None,\
                             origin=None, \
+                            params=None, \
                             headers=None, \
                             proxy=None, proxy_auth=None, ssl=None, \
                             verify_ssl=None, fingerprint=None, \
@@ -684,6 +691,21 @@ The client session supports the context manager protocol for self closing.
                               reception.(optional)
 
       :param str origin: Origin header to send to server(optional)
+
+      :param params: Mapping, iterable of tuple of *key*/*value* pairs or
+                     string to be sent as parameters in the query
+                     string of the new request. Ignored for subsequent
+                     redirected requests (optional)
+
+                     Allowed values are:
+
+                     - :class:`collections.abc.Mapping` e.g. :class:`dict`,
+                       :class:`multidict.MultiDict` or
+                       :class:`multidict.MultiDictProxy`
+                     - :class:`collections.abc.Iterable` e.g. :class:`tuple` or
+                       :class:`list`
+                     - :class:`str` with preferably url-encoded content
+                       (**Warning:** content will not be encoded by *aiohttp*)
 
       :param dict headers: HTTP Headers to send with
                            the request (optional)

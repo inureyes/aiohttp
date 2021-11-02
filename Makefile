@@ -62,6 +62,15 @@ aiohttp/_find_header.c: $(call to-hash,aiohttp/hdrs.py ./tools/gen.py)
 aiohttp/%.c: aiohttp/%.pyx $(call to-hash,$(CYS)) aiohttp/_find_header.c
 	cython -3 -o $@ $< -I aiohttp
 
+vendor/llhttp/node_modules: vendor/llhttp/package.json
+	cd vendor/llhttp; npm install
+
+.llhttp-gen: vendor/llhttp/node_modules
+	$(MAKE) -C vendor/llhttp generate
+	@touch .llhttp-gen
+
+.PHONY: generate-llhttp
+generate-llhttp: .llhttp-gen
 
 .PHONY: cythonize
 cythonize: .install-cython $(PYXS:.pyx=.c)
@@ -81,7 +90,7 @@ fmt format:
 mypy:
 	mypy
 
-.develop: .install-deps $(call to-hash,$(PYS) $(CYS) $(CS))
+.develop: .install-deps generate-llhttp $(call to-hash,$(PYS) $(CYS) $(CS))
 	pip install -e .
 	@touch .develop
 
@@ -103,6 +112,30 @@ vvtest: .develop
 cov-dev: .develop
 	@pytest --cov-report=html
 	@echo "xdg-open file://`pwd`/htmlcov/index.html"
+
+
+define run_tests_in_docker
+	DOCKER_BUILDKIT=1 docker build --build-arg PYTHON_VERSION=$(1) --build-arg AIOHTTP_NO_EXTENSIONS=$(2) -t "aiohttp-test-$(1)-$(2)" -f tools/testing/Dockerfile .
+	docker run --rm -ti -v `pwd`:/src -w /src "aiohttp-test-$(1)-$(2)" $(TEST_SPEC)
+endef
+
+.PHONY: test-3.7-no-extensions test-3.7 test-3.8-no-extensions test-3.8 test-3.9-no-extensions test-3.9 test-3.10-no-extensions test-3.10
+test-3.7-no-extensions:
+	$(call run_tests_in_docker,3.7,y)
+test-3.7:
+	$(call run_tests_in_docker,3.7,n)
+test-3.8-no-extensions:
+	$(call run_tests_in_docker,3.8,y)
+test-3.8:
+	$(call run_tests_in_docker,3.8,n)
+test-3.9-no-extensions:
+	$(call run_tests_in_docker,3.9,y)
+test-3.9:
+	$(call run_tests_in_docker,3.9,n)
+test-3.10-no-extensions:
+	$(call run_tests_in_docker,3.10,y)
+test-3.10:
+	$(call run_tests_in_docker,3.10,n)
 
 .PHONY: clean
 clean:
@@ -137,6 +170,9 @@ clean:
 	@rm -rf aiohttp.egg-info
 	@rm -f .install-deps
 	@rm -f .install-cython
+	@rm -rf vendor/llhttp/node_modules
+	@rm -f .llhttp-gen
+	@$(MAKE) -C vendor/llhttp clean
 
 .PHONY: doc
 doc:
