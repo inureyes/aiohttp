@@ -47,7 +47,7 @@ cfgv==3.2.0
     #   pre-commit
 chardet==4.0.0
     # via requests
-charset-normalizer==2.0.8
+charset-normalizer==2.0.9
     # via -r requirements/base.txt
 cherry_picker==2.1.0 ; python_version >= "3.6"
     # via -r requirements/dev.in
@@ -241,7 +241,7 @@ six==1.16.0
     #   virtualenv
 snowballstemmer==2.0.0
     # via sphinx
-sphinx==4.3.0
+sphinx==4.3.1
     # via
     #   -r requirements/doc.txt
     #   sphinxcontrib-asyncio
@@ -251,7 +251,7 @@ sphinxcontrib-applehelp==1.0.2
     # via sphinx
 sphinxcontrib-asyncio==0.3.0
     # via -r requirements/doc.txt
-sphinxcontrib-blockdiag==2.0.0
+sphinxcontrib-blockdiag==3.0.0
     # via -r requirements/doc.txt
 sphinxcontrib-devhelp==1.0.2
     # via sphinx
