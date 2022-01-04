@@ -46,7 +46,7 @@ pillow==8.3.2
     # via blockdiag
 pyenchant==3.2.0
     # via sphinxcontrib-spelling
-pygments==2.10.0
+pygments==2.11.1
     # via
     #   -r requirements/doc.txt
     #   sphinx
@@ -83,7 +83,7 @@ sphinxcontrib-serializinghtml==1.1.5
     # via sphinx
 sphinxcontrib-spelling==7.3.2 ; platform_system != "Windows"
     # via -r requirements/doc-spelling.in
-sphinxcontrib-towncrier==0.2.0a0
+sphinxcontrib-towncrier==0.2.1a0
     # via -r requirements/doc.txt
 toml==0.10.2
     # via towncrier

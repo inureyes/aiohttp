@@ -189,7 +189,7 @@ pyflakes==2.4.0
     #   -r requirements/lint.txt
     #   flake8
     #   flake8-pyi
-pygments==2.10.0
+pygments==2.11.1
     # via
     #   -r requirements/doc.txt
     #   sphinx
@@ -260,7 +260,7 @@ sphinxcontrib-qthelp==1.0.3
     # via sphinx
 sphinxcontrib-serializinghtml==1.1.5
     # via sphinx
-sphinxcontrib-towncrier==0.2.0a0
+sphinxcontrib-towncrier==0.2.1a0
     # via -r requirements/doc.txt
 toml==0.10.2
     # via
