@@ -48,7 +48,7 @@ chardet==4.0.0
     # via requests
 charset-normalizer==2.0.11
     # via -r requirements/base.txt
-cherry_picker==2.1.0 ; python_version >= "3.6"
+cherry-picker==2.1.0 ; python_version >= "3.6"
     # via -r requirements/dev.in
 click==8.0.3
     # via
@@ -167,7 +167,7 @@ pluggy==0.13.1
     #   pytest
 pre-commit==2.17.0
     # via -r requirements/lint.txt
-proxy.py==2.4.0
+proxy-py==2.4.0
     # via -r requirements/test.txt
 py==1.10.0
     # via
@@ -210,7 +210,7 @@ pytest-mock==3.7.0
     # via -r requirements/test.txt
 python-dateutil==2.8.1
     # via freezegun
-python-on-whales==0.36.1
+python-on-whales==0.37.0
     # via -r requirements/dev.in
 pytz==2020.5
     # via babel
@@ -268,13 +268,13 @@ toml==0.10.2
     #   mypy
     #   pre-commit
     #   pytest
-    #   towncrier
 tomli==1.2.1
     # via
     #   -r requirements/lint.txt
     #   black
     #   coverage
-towncrier==21.3.0
+    #   towncrier
+towncrier==21.9.0
     # via
     #   -r requirements/doc.txt
     #   sphinxcontrib-towncrier
@@ -314,3 +314,4 @@ setuptools==57.4.0
     # via
     #   blockdiag
     #   gunicorn
+    #   towncrier
