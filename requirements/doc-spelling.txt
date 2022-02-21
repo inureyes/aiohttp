@@ -85,9 +85,9 @@ sphinxcontrib-spelling==7.3.2 ; platform_system != "Windows"
     # via -r requirements/doc-spelling.in
 sphinxcontrib-towncrier==0.2.1a0
     # via -r requirements/doc.txt
-toml==0.10.2
+tomli==2.0.1
     # via towncrier
-towncrier==21.3.0
+towncrier==21.9.0
     # via
     #   -r requirements/doc.txt
     #   sphinxcontrib-towncrier
@@ -98,4 +98,6 @@ webcolors==1.11.1
 
 # The following packages are considered to be unsafe in a requirements file:
 setuptools==53.0.0
-    # via blockdiag
+    # via
+    #   blockdiag
+    #   towncrier
