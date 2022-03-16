@@ -167,7 +167,7 @@ pluggy==0.13.1
     #   pytest
 pre-commit==2.17.0
     # via -r requirements/lint.txt
-proxy-py==2.4.0
+proxy-py==2.4.1
     # via -r requirements/test.txt
 py==1.10.0
     # via
@@ -210,7 +210,7 @@ pytest-mock==3.7.0
     # via -r requirements/test.txt
 python-dateutil==2.8.1
     # via freezegun
-python-on-whales==0.38.0
+python-on-whales==0.39.0
     # via -r requirements/dev.in
 pytz==2020.5
     # via babel
