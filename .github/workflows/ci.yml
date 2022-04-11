@@ -167,7 +167,7 @@ jobs:
       run:
         python setup.py sdist
     - name: Upload artifacts
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
         name: dist
         path: dist
@@ -215,7 +215,7 @@ jobs:
         docker run --rm -v ${{ github.workspace }}:/ws:rw --workdir=/ws \
           ${{ env.img }} auditwheel repair dist/*.whl --wheel-dir wheelhouse/
     - name: Upload artifacts
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
         name: dist
         path: wheelhouse/*
@@ -254,7 +254,7 @@ jobs:
       run:
         python setup.py bdist_wheel
     - name: Upload artifacts
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
         name: dist
         path: dist
