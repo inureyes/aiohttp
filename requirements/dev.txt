@@ -56,7 +56,6 @@ click==8.0.3
     #   black
     #   cherry-picker
     #   click-default-group
-    #   python-on-whales
     #   towncrier
     #   typer
     #   wait-for-it
@@ -211,7 +210,7 @@ pytest-mock==3.7.0
     # via -r requirements/test.txt
 python-dateutil==2.8.1
     # via freezegun
-python-on-whales==0.41.0
+python-on-whales==0.43.0
     # via -r requirements/dev.in
 pytz==2020.5
     # via babel
@@ -283,7 +282,7 @@ tqdm==4.62.2
     # via python-on-whales
 trustme==0.9.0 ; platform_machine != "i686"
     # via -r requirements/test.txt
-typer==0.4.0
+typer==0.4.1
     # via python-on-whales
 types-chardet==0.1.3
     # via
