@@ -61,7 +61,7 @@ click==8.0.3
     #   wait-for-it
 click-default-group==1.2.2
     # via towncrier
-coverage[toml]==6.3.3
+coverage[toml]==6.4
     # via
     #   -r requirements/test.txt
     #   pytest-cov
@@ -167,7 +167,7 @@ pluggy==0.13.1
     #   pytest
 pre-commit==2.19.0
     # via -r requirements/lint.txt
-proxy-py==2.4.1
+proxy-py==2.4.2
     # via -r requirements/test.txt
 py==1.10.0
     # via
