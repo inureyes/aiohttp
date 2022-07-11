@@ -165,7 +165,7 @@ pluggy==0.13.1
     # via
     #   -r requirements/lint.txt
     #   pytest
-pre-commit==2.19.0
+pre-commit==2.20.0
     # via -r requirements/lint.txt
 proxy-py==2.4.3
     # via -r requirements/test.txt
