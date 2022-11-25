@@ -83,7 +83,7 @@ flake8==4.0.1
     # via
     #   -r requirements/lint.txt
     #   flake8-pyi
-flake8-pyi==22.5.1
+flake8-pyi==22.11.0
     # via -r requirements/lint.txt
 freezegun==1.2.1
     # via -r requirements/test.txt
@@ -269,11 +269,7 @@ toml==0.10.2
     #   pre-commit
     #   pytest
 tomli==1.2.1
-    # via
-    #   -r requirements/lint.txt
-    #   black
-    #   coverage
-    #   towncrier
+    # via towncrier
 towncrier==21.9.0
     # via
     #   -r requirements/doc.txt
