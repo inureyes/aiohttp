@@ -210,7 +210,7 @@ pytest-mock==3.8.1
     # via -r requirements/test.txt
 python-dateutil==2.8.1
     # via freezegun
-python-on-whales==0.46.0
+python-on-whales==0.55.0
     # via -r requirements/dev.in
 pytz==2020.5
     # via babel
@@ -271,8 +271,6 @@ toml==0.10.2
 tomli==1.2.1
     # via
     #   -r requirements/lint.txt
-    #   black
-    #   coverage
     #   towncrier
 towncrier==21.9.0
     # via
