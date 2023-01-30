@@ -83,7 +83,7 @@ flake8==4.0.1
     # via
     #   -r requirements/lint.txt
     #   flake8-pyi
-flake8-pyi==22.5.1
+flake8-pyi==23.1.1
     # via -r requirements/lint.txt
 freezegun==1.2.1
     # via -r requirements/test.txt
@@ -227,6 +227,11 @@ requests==2.25.1
     #   cherry-picker
     #   python-on-whales
     #   sphinx
+setuptools==57.4.0
+    # via
+    #   blockdiag
+    #   gunicorn
+    #   towncrier
 setuptools-git==1.2
     # via -r requirements/test.txt
 six==1.16.0
@@ -269,11 +274,7 @@ toml==0.10.2
     #   pre-commit
     #   pytest
 tomli==1.2.1
-    # via
-    #   -r requirements/lint.txt
-    #   black
-    #   coverage
-    #   towncrier
+    # via towncrier
 towncrier==21.9.0
     # via
     #   -r requirements/doc.txt
@@ -309,10 +310,3 @@ webcolors==1.11.1
     # via blockdiag
 yarl==1.7.2
     # via -r requirements/base.txt
-
-# The following packages are considered to be unsafe in a requirements file:
-setuptools==57.4.0
-    # via
-    #   blockdiag
-    #   gunicorn
-    #   towncrier
